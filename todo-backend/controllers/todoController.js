@@ -1,7 +1,6 @@
-import Todo from "../models/todos.js";
-import {CastError} from "mongoose";
+const Todo = require('../models/todos.js')
 
-async function getAllTodos(req,res,next) {
+async function getAllTodos(req,res) {
     try {
         const todos = await Todo.find();
         res.json(todos);
@@ -13,7 +12,6 @@ async function getAllTodos(req,res,next) {
 async function getSingleTodo(req, res, next) {
     try {
         const todo = await Todo.findById(req.params.id);
-
         if(todo) {
             res.json(todo);
         } else {
@@ -52,15 +50,16 @@ async function createTodo(req,res,next) {
 }
 
 async function deleteTodo(req,res,next){
+    let todoId = req.params.id
     try {
-        await Todo.findByIdAndDelete(req.params.id);
+        await Todo.findByIdAndDelete(todoId);
         res.status(204).send();
     } catch (error) {
         next(error);
     }
 }
 
-export default {
+module.exports = {
     getAllTodos,
     getSingleTodo,
     updateTodo,
